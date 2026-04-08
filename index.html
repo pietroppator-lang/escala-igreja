@@ -3,50 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Escala - Verbo da Vida</title>
+    <title>Sistema Escala - Verbo da Vida</title>
     <style>
         :root { --azul: #007bff; --preto: #0b0b0b; --cinza: #1a1a1a; --branco: #ffffff; }
         body { background-color: var(--preto); color: var(--branco); font-family: 'Segoe UI', sans-serif; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; }
-        .container { width: 100%; max-width: 500px; background-color: var(--cinza); padding: 20px; border-radius: 15px; border-left: 4px solid var(--azul); box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-top: 10px; box-sizing: border-box; }
-        h2 { text-align: center; color: var(--azul); margin-bottom: 20px; }
-        input, button { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: none; box-sizing: border-box; }
-        input { background-color: #252525; color: white; border: 1px solid #333; }
-        button { background-color: var(--azul); color: white; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        .btn-excluir { background: #dc3545; width: auto; padding: 5px 10px; font-size: 11px; float: right; }
-        .card { background: #222; padding: 15px; border-radius: 10px; margin-bottom: 15px; border-left: 3px solid var(--azul); overflow: hidden; }
+        .container { width: 100%; max-width: 500px; background-color: var(--cinza); padding: 20px; border-radius: 15px; border-left: 4px solid var(--azul); box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-bottom: 20px; box-sizing: border-box; }
+        h2 { text-align: center; color: var(--azul); margin-top: 0; }
+        input, textarea, button { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: none; box-sizing: border-box; font-size: 16px; }
+        input, textarea { background-color: #252525; color: white; border: 1px solid #333; }
+        button { background-color: var(--azul); color: white; font-weight: bold; cursor: pointer; }
+        .btn-excluir { background: #dc3545; width: auto; padding: 5px 10px; font-size: 12px; float: right; margin: 0; }
+        .card { background: #222; padding: 15px; border-radius: 10px; margin-bottom: 10px; border-left: 3px solid var(--azul); position: relative; overflow: hidden; }
         .hidden { display: none; }
-        .nav { display: flex; gap: 5px; width: 100%; max-width: 500px; }
-        .nav button { font-size: 12px; padding: 10px 5px; }
+        .nav { display: flex; gap: 5px; width: 100%; max-width: 500px; margin-bottom: 10px; }
+        .nav button { font-size: 11px; padding: 10px 2px; background: #333; }
     </style>
 </head>
 <body>
 
     <div class="nav">
-        <button onclick="irPara('inicial')">Início</button>
-        <button onclick="verificarLogin()">Painel ADM</button>
-        <button style="background:#444" onclick="sair()">Sair/Voltar</button>
+        <button onclick="irPara('inicial')">ESCALAS</button>
+        <button onclick="irPara('disponibilidade')">DISPONIBILIDADE</button>
+        <button onclick="verificarADM()">PAINEL ADM</button>
+        <button style="background:#666" onclick="sair()">SAIR</button>
     </div>
 
     <div id="pag-inicial" class="container">
-        <h2>Escalas Publicadas</h2>
-        <div id="lista-geral">Carregando...</div>
+        <h2>Escalas</h2>
+        <div id="lista-escalas">Carregando...</div>
+    </div>
+
+    <div id="pag-disponibilidade" class="container hidden">
+        <h2>Sua Disponibilidade</h2>
+        <input type="text" id="nome-membro" placeholder="Seu Nome">
+        <textarea id="texto-disponibilidade" placeholder="Quais dias você pode?"></textarea>
+        <button onclick="salvarDisponibilidade()">Enviar para o ADM</button>
+        <hr style="border:0; border-top:1px solid #333; margin:20px 0;">
+        <div id="lista-disponibilidade"></div>
     </div>
 
     <div id="pag-login" class="container hidden">
-        <h2>Acesso ADM</h2>
-        <input type="password" id="senha" placeholder="Senha de acesso">
+        <h2>Acesso Restrito</h2>
+        <input type="password" id="senha" placeholder="Senha ADM">
         <button onclick="logar()">Entrar</button>
     </div>
 
     <div id="pag-adm" class="container hidden">
-        <h2>Nova Escala</h2>
-        <input type="text" id="nome-culto" placeholder="Ex: Culto da Família">
-        <input type="text" id="data-culto" placeholder="Ex: Domingo - 19h">
-        <input type="text" id="equipe" placeholder="Ex: Pedro (Voz), João (Violão)">
-        <button onclick="salvar()">Publicar Agora</button>
+        <h2>Gerenciar Sistema</h2>
+        <p style="font-size: 12px; color: #aaa;">Criar Nova Escala:</p>
+        <input type="text" id="esc-culto" placeholder="Culto">
+        <input type="text" id="esc-data" placeholder="Data">
+        <input type="text" id="esc-equipe" placeholder="Equipe">
+        <button onclick="salvarEscala()">Publicar Escala</button>
         <hr style="border:0; border-top:1px solid #333; margin:20px 0;">
-        <h3>Escalas Ativas</h3>
-        <div id="lista-adm"></div>
+        <h3>Escalas / Pedidos</h3>
+        <div id="lista-adm-geral"></div>
     </div>
 
     <script type="module">
@@ -70,16 +81,17 @@
         window.irPara = (id) => {
             document.querySelectorAll('.container').forEach(c => c.classList.add('hidden'));
             document.getElementById('pag-' + id).classList.remove('hidden');
+            window.scrollTo(0,0);
         };
 
-        window.verificarLogin = () => {
-            if(sessionStorage.getItem('adm')) irPara('adm');
+        window.verificarADM = () => {
+            if(sessionStorage.getItem('logado')) irPara('adm');
             else irPara('login');
         };
 
         window.logar = () => {
             if(document.getElementById('senha').value === '123') {
-                sessionStorage.setItem('adm', 'true');
+                sessionStorage.setItem('logado', 'true');
                 irPara('adm');
             } else { alert('Senha incorreta!'); }
         };
@@ -89,41 +101,55 @@
             location.reload();
         };
 
-        // SALVAR
-        window.salvar = () => {
-            const r = ref(db, 'escalas');
-            push(r, {
-                culto: document.getElementById('nome-culto').value,
-                data: document.getElementById('data-culto').value,
-                equipe: document.getElementById('equipe').value
-            }).then(() => {
-                alert('Escala publicada!');
-                document.querySelectorAll('input').forEach(i => i.value = '');
-            });
+        // SALVAR DADOS
+        window.salvarEscala = () => {
+            push(ref(db, 'escalas'), {
+                culto: document.getElementById('esc-culto').value,
+                data: document.getElementById('esc-data').value,
+                equipe: document.getElementById('esc-equipe').value
+            }).then(() => { alert('Escala publicada!'); document.querySelectorAll('input').forEach(i => i.value = ''); });
+        };
+
+        window.salvarDisponibilidade = () => {
+            push(ref(db, 'disponibilidade'), {
+                nome: document.getElementById('nome-membro').value,
+                texto: document.getElementById('texto-disponibilidade').value
+            }).then(() => { alert('Enviado com sucesso!'); location.reload(); });
         };
 
         // EXCLUIR
-        window.deletar = (id) => {
-            if(confirm('Excluir esta escala?')) {
-                remove(ref(db, 'escalas/' + id));
+        window.apagarItem = (caminho, id) => {
+            if(confirm('Deseja excluir permanentemente?')) {
+                remove(ref(db, caminho + '/' + id));
             }
         };
 
-        // MOSTRAR DADOS
-        onValue(ref(db, 'escalas'), (snap) => {
-            const dados = snap.val();
-            let htmlGeral = '';
-            let htmlAdm = '';
-
-            for(let id in dados) {
-                const e = dados[id];
-                htmlGeral += `<div class="card"><strong>${e.culto}</strong><br><small>${e.data}</small><br><br>${e.equipe}</div>`;
-                htmlAdm += `<div class="card"><button class="btn-excluir" onclick="deletar('${id}')">Excluir</button><strong>${e.culto}</strong><br>${e.data}</div>`;
+        // ATUALIZAÇÃO EM TEMPO REAL
+        onValue(ref(db), (snapshot) => {
+            const banco = snapshot.val() || {};
+            
+            // Renderiza Escalas
+            let htmlEsc = '';
+            let htmlAdm = '<h4>Escalas Ativas:</h4>';
+            for(let id in banco.escalas) {
+                const e = banco.escalas[id];
+                htmlEsc += `<div class="card"><strong>${e.culto}</strong><br><small>${e.data}</small><br><br>${e.equipe}</div>`;
+                htmlAdm += `<div class="card"><button class="btn-excluir" onclick="apagarItem('escalas','${id}')">Excluir</button><strong>${e.culto}</strong><br>${e.data}</div>`;
             }
+            document.getElementById('lista-escalas').innerHTML = htmlEsc || 'Nenhuma escala.';
 
-            document.getElementById('lista-geral').innerHTML = htmlGeral || 'Nenhuma escala.';
-            document.getElementById('lista-adm').innerHTML = htmlAdm || 'Nenhuma escala.';
+            // Renderiza Disponibilidade
+            let htmlDisp = '';
+            let htmlDispAdm = '<br><h4>Pedidos de Disponibilidade:</h4>';
+            for(let id in banco.disponibilidade) {
+                const d = banco.disponibilidade[id];
+                htmlDisp += `<div class="card"><strong>${d.nome}</strong>: ${d.texto}</div>`;
+                htmlDispAdm += `<div class="card"><button class="btn-excluir" onclick="apagarItem('disponibilidade','${id}')">Limpar</button><strong>${d.nome}</strong><br>${d.texto}</div>`;
+            }
+            document.getElementById('lista-disponibilidade').innerHTML = htmlDisp || 'Nenhuma resposta ainda.';
+            document.getElementById('lista-adm-geral').innerHTML = htmlAdm + htmlDispAdm;
         });
+
     </script>
 </body>
 </html>
