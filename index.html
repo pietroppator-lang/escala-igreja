@@ -373,19 +373,19 @@
 
         function limparESair() { limparSessaoTotal(); }
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getDatabase } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyBMc606NmVgdUXG8dDET3bIjfqD354fHlQ",
-    authDomain: "escala-verbo-da-vida.firebaseapp.com",
-    projectId: "escala-verbo-da-vida",
-    storageBucket: "escala-verbo-da-vida.firebasestorage.app",
-    messagingSenderId: "571256917336",
-    appId: "1:571256917336:web:f3fc00d02d09ac49fd692d"
-  };
+const firebaseConfig = {
+  apiKey: "AIzaSyBMc606NmVgdUXG8dDET3bIjfqD354fHlQ",
+  authDomain: "escala-verbo-da-vida.firebaseapp.com",
+  databaseURL: "https://escala-verbo-da-vida-default-rtdb.firebaseio.com",
+  projectId: "escala-verbo-da-vida",
+  storageBucket: "escala-verbo-da-vida.firebasestorage.app",
+  messagingSenderId: "571256917336",
+  appId: "1:571256917336:web:f3fc00d02d09ac49fd692d"
+};
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-    </script>
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);    </script>
 </body>
 </html>
