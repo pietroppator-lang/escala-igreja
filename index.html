@@ -3,57 +3,236 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema Verbo da Vida</title>
+    <title>Sistema de Escala - Verbo da Vida</title>
     <style>
-        :root { --azul: #007bff; --preto: #0b0b0b; --cinza: #1a1a1a; --branco: #ffffff; }
-        body { background-color: var(--preto); color: var(--branco); font-family: 'Segoe UI', sans-serif; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; }
-        
-        .nav { display: flex; gap: 5px; width: 100%; max-width: 500px; margin-bottom: 15px; }
-        .nav button { flex: 1; padding: 12px 2px; border-radius: 8px; border: none; background: #333; color: white; font-weight: bold; font-size: 10px; cursor: pointer; }
-        .nav button.active { background: var(--azul); }
+        :root {
+            --azul: #007bff;
+            --azul-hover: #0056b3;
+            --preto: #0b0b0b;
+            --cinza-escuro: #1a1a1a;
+            --cinza-claro: #252525;
+            --branco: #ffffff;
+            --danger: #dc3545;
+        }
 
-        .container { width: 100%; max-width: 500px; background-color: var(--cinza); padding: 20px; border-radius: 15px; border-left: 5px solid var(--azul); box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-bottom: 20px; box-sizing: border-box; }
-        h2 { text-align: center; color: var(--azul); margin-top: 0; }
-        
-        input, textarea, button { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: none; box-sizing: border-box; font-size: 16px; }
-        input, textarea { background-color: #252525; color: white; border: 1px solid #333; }
-        button { background-color: var(--azul); color: white; font-weight: bold; cursor: pointer; }
-        
-        .card { background: #222; padding: 15px; border-radius: 10px; margin-bottom: 15px; border-left: 3px solid var(--azul); position: relative; }
-        .btn-excluir { background: #dc3545; width: auto; padding: 5px 10px; font-size: 11px; position: absolute; top: 10px; right: 10px; margin: 0; }
-        
-        .grid-check { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; background: #111; padding: 15px; border-radius: 10px; margin: 10px 0; }
-        .check-item { display: flex; align-items: center; gap: 8px; color: #fff; font-size: 14px; }
-        .check-item input { width: 18px; height: 18px; margin: 0; }
-        
+        body {
+            background-color: var(--preto);
+            color: var(--branco);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* NAVEGAÇÃO */
+        .nav {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            max-width: 500px;
+            padding: 20px 10px;
+            position: sticky;
+            top: 0;
+            background: var(--preto);
+            z-index: 1000;
+        }
+
+        .nav button {
+            flex: 1;
+            padding: 12px 5px;
+            border: none;
+            border-radius: 12px;
+            background: var(--cinza-escuro);
+            color: white;
+            font-weight: 600;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .nav button.active {
+            background: var(--azul);
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
+        }
+
+        /* CONTAINERS */
+        .container {
+            width: 90%;
+            max-width: 500px;
+            background-color: var(--cinza-escuro);
+            padding: 30px;
+            border-radius: 25px;
+            border-left: 6px solid var(--azul);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+            margin-bottom: 30px;
+            box-sizing: border-box;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--azul);
+            margin-bottom: 25px;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        /* FORMULÁRIOS */
+        input, textarea, select {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 12px;
+            border: 1px solid #333;
+            background-color: var(--cinza-claro);
+            color: white;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: 0.3s;
+        }
+
+        input:focus, textarea:focus {
+            border-color: var(--azul);
+            outline: none;
+            background: #2a2a2a;
+        }
+
+        button.btn-principal {
+            width: 100%;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 12px;
+            border: none;
+            background-color: var(--azul);
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button.btn-principal:hover {
+            background-color: var(--azul-hover);
+            transform: translateY(-2px);
+        }
+
+        /* CARDS DE ESCALA */
+        .card {
+            background: linear-gradient(145deg, #222, #181818);
+            padding: 20px;
+            border-radius: 18px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--azul);
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        .card strong {
+            display: block;
+            font-size: 20px;
+            color: var(--azul);
+            margin-bottom: 5px;
+        }
+
+        .card small {
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        .card p {
+            margin-top: 15px;
+            line-height: 1.6;
+            color: #eee;
+        }
+
+        /* BOTÃO EXCLUIR */
+        .btn-excluir {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: bold;
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        /* GRID DE CHECKBOX */
+        .grid-check {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            background: #111;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 15px 0;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .check-item input {
+            width: 20px;
+            height: 20px;
+            margin: 0;
+            cursor: pointer;
+            accent-color: var(--azul);
+        }
+
         .hidden { display: none; }
+
+        .footer {
+            margin: 40px 0;
+            color: #555;
+            font-size: 12px;
+        }
     </style>
 </head>
 <body>
 
     <div class="nav">
-        <button id="btn-home" onclick="irPara('home')" class="active">PÁGINA INICIAL</button>
-        <button id="btn-membro" onclick="acessarArea('membro')">DISPONIBILIDADE</button>
-        <button id="btn-adm" onclick="acessarArea('adm')">PAINEL ADM</button>
-        <button style="background:#555" onclick="sair()">SAIR</button>
+        <button id="btn-nav-home" onclick="irPara('home')" class="active">Início</button>
+        <button id="btn-nav-membro" onclick="acessarArea('membro')">Disponibilidade</button>
+        <button id="btn-nav-adm" onclick="acessarArea('adm')">Painel ADM</button>
+        <button style="background:#444" onclick="sair()">Sair</button>
     </div>
 
     <div id="pag-home" class="container">
-        <h2>Escalas Publicadas</h2>
+        <h2>Escalas de Culto</h2>
         <div id="lista-escalas">Carregando escalas...</div>
     </div>
 
     <div id="pag-login" class="container hidden">
-        <h2 id="titulo-login">Acesso</h2>
+        <h2 id="login-titulo">Entrar</h2>
         <input type="text" id="user" placeholder="Usuário" autocomplete="off">
         <input type="password" id="pass" placeholder="Senha" autocomplete="off">
-        <button onclick="fazerLogin()">ENTRAR</button>
+        <button class="btn-principal" onclick="fazerLogin()">ACESSAR</button>
     </div>
 
     <div id="pag-membro" class="container hidden">
-        <h2 id="saudacao">Olá!</h2>
-        <p style="text-align:center; font-size:14px;">Marque sua disponibilidade:</p>
+        <h2 id="boas-vindas">Olá!</h2>
+        <p style="text-align:center; color:#888">Informe sua disponibilidade abaixo:</p>
         <input type="text" id="nome-membro" placeholder="Seu Nome Completo">
+        
         <div class="grid-check">
             <label class="check-item"><input type="checkbox" value="Ministro"> Ministro</label>
             <label class="check-item"><input type="checkbox" value="Voz"> Voz</label>
@@ -64,19 +243,24 @@
             <label class="check-item"><input type="checkbox" value="Bateria"> Bateria</label>
             <label class="check-item"><input type="checkbox" value="Guitarra"> Guitarra</label>
         </div>
-        <button onclick="enviarDisp()">ENVIAR RESPOSTA</button>
-        <div id="minhas-respostas" style="margin-top:20px;"></div>
+        
+        <button class="btn-principal" onclick="enviarDisponibilidade()">ENVIAR RESPOSTA</button>
+        <div id="minhas-respostas-membro" style="margin-top:20px"></div>
     </div>
 
     <div id="pag-adm" class="container hidden">
-        <h2>Painel do Líder</h2>
+        <h2>Gerenciar Escalas</h2>
         <input type="text" id="c-culto" placeholder="Nome do Culto">
-        <input type="text" id="c-data" placeholder="Data">
-        <textarea id="c-equipe" placeholder="Equipe (Nome - Função)"></textarea>
-        <button onclick="postar()">PUBLICAR ESCALA</button>
-        <hr style="border:0; border-top:1px solid #333; margin:20px 0;">
-        <div id="lista-adm-total"></div>
+        <input type="text" id="c-data" placeholder="Data (Ex: Domingo - 19h)">
+        <textarea id="c-equipe" rows="5" placeholder="Equipe (Ex: Pedro - Voz, João - Baixo)"></textarea>
+        <button class="btn-principal" onclick="publicarEscala()">PUBLICAR ESCALA</button>
+        
+        <hr style="border:0; border-top:1px solid #333; margin:30px 0;">
+        <h3>Escalas e Pedidos</h3>
+        <div id="lista-adm-controle"></div>
     </div>
+
+    <div class="footer">Verbo da Vida - Sistema de Escala</div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
@@ -95,76 +279,112 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        let areaPretendida = '';
+        let areaDestino = '';
 
         window.irPara = (id) => {
             document.querySelectorAll('.container').forEach(c => c.classList.add('hidden'));
             document.getElementById('pag-' + id).classList.remove('hidden');
+            
             document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
-            if(id === 'home') document.getElementById('btn-home').classList.add('active');
+            const btn = document.getElementById('btn-nav-' + (id === 'home' ? 'home' : id === 'membro' ? 'membro' : 'adm'));
+            if(btn) btn.classList.add('active');
         };
 
         window.acessarArea = (area) => {
-            areaPretendida = area;
-            const logado = sessionStorage.getItem('tipo');
-            if(logado === area || logado === 'adm') irPara(area);
-            else {
-                document.getElementById('titulo-login').innerText = "Login " + (area === 'adm' ? "ADM" : "Músicos");
+            areaDestino = area;
+            const logado = sessionStorage.getItem('tipoAcesso');
+            if(logado === area || logado === 'adm') {
+                irPara(area);
+            } else {
+                document.getElementById('login-titulo').innerText = "Login " + (area === 'adm' ? "Líder" : "Músicos");
                 irPara('login');
             }
         };
 
         window.fazerLogin = () => {
-            const u = document.getElementById('user').value;
+            const u = document.getElementById('user').value.toLowerCase().trim();
             const p = document.getElementById('pass').value;
 
             if(u === 'pedroliveira' && p === 'admin123') {
-                sessionStorage.setItem('tipo', 'adm');
-                irPara(areaPretendida || 'adm');
+                sessionStorage.setItem('tipoAcesso', 'adm');
+                irPara(areaDestino || 'adm');
             } else if(u === 'membro' && p === 'verbo') {
-                sessionStorage.setItem('tipo', 'membro');
+                sessionStorage.setItem('tipoAcesso', 'membro');
                 irPara('membro');
-            } else { alert('Dados incorretos!'); }
+            } else {
+                alert('Acesso negado. Verifique usuário e senha.');
+            }
         };
 
-        window.sair = () => { sessionStorage.clear(); location.reload(); };
+        window.sair = () => {
+            sessionStorage.clear();
+            location.reload();
+        };
 
-        window.enviarDisp = () => {
+        window.enviarDisponibilidade = () => {
             const nome = document.getElementById('nome-membro').value;
             const funcs = Array.from(document.querySelectorAll('.grid-check input:checked')).map(i => i.value);
-            if(!nome || funcs.length === 0) return alert('Preencha seu nome e funções!');
-            push(ref(db, 'respostas'), { nome, funcoes: funcs.join(' + ') }).then(() => {
-                alert('Enviado!'); document.getElementById('saudacao').innerText = "Olá, " + nome + "!";
+            
+            if(!nome || funcs.length === 0) return alert('Preencha seu nome e marque as funções.');
+
+            push(ref(db, 'disponibilidade'), {
+                nome: nome,
+                funcoes: funcs.join(' + '),
+                data: new Date().toLocaleDateString()
+            }).then(() => {
+                alert('Disponibilidade enviada com sucesso!');
+                document.getElementById('boas-vindas').innerText = "Olá, " + nome + "!";
+                document.getElementById('nome-membro').value = "";
+                document.querySelectorAll('.grid-check input').forEach(c => c.checked = false);
             });
         };
 
-        window.postar = () => {
-            push(ref(db, 'escalas'), {
-                culto: document.getElementById('c-culto').value,
-                data: document.getElementById('c-data').value,
-                equipe: document.getElementById('c-equipe').value
-            }).then(() => alert('Escala publicada!'));
+        window.publicarEscala = () => {
+            const culto = document.getElementById('c-culto').value;
+            const data = document.getElementById('c-data').value;
+            const equipe = document.getElementById('c-equipe').value;
+
+            if(!culto || !data) return alert('Preencha os campos obrigatórios.');
+
+            push(ref(db, 'escalas_db'), { culto, data, equipe }).then(() => {
+                alert('Escala publicada!');
+                document.getElementById('c-culto').value = "";
+                document.getElementById('c-data').value = "";
+                document.getElementById('c-equipe').value = "";
+            });
         };
 
-        window.excluir = (pasta, id) => {
-            if(confirm('Apagar permanentemente?')) remove(ref(db, pasta + '/' + id));
+        window.deletar = (caminho, id) => {
+            if(confirm('Deseja realmente apagar este item?')) {
+                remove(ref(db, caminho + '/' + id));
+            }
         };
 
-        onValue(ref(db), (snap) => {
-            const d = snap.val() || {};
-            let hEsc = '', hMembro = '', hAdm = '<h3>Gerenciamento</h3>';
-            for(let id in d.escalas) {
-                hEsc += `<div class="card"><strong>${d.escalas[id].culto}</strong><br>${d.escalas[id].data}<br><br>${d.escalas[id].equipe}</div>`;
-                hAdm += `<div class="card"><button class="btn-excluir" onclick="excluir('escalas','${id}')">X</button><strong>${d.escalas[id].culto}</strong></div>`;
+        // ESCUTA O BANCO DE DADOS EM TEMPO REAL
+        onValue(ref(db), (snapshot) => {
+            const data = snapshot.val() || {};
+            let htmlEscalas = '', htmlMembro = '', htmlAdm = '<h4>Controle de Escalas e Pedidos</h4>';
+
+            // Listar Escalas
+            for(let id in data.escalas_db) {
+                const e = data.escalas_db[id];
+                const cardHtml = `<div class="card"><strong>${e.culto}</strong><small>${e.data}</small><p>${e.equipe.replace(/\n/g, '<br>')}</p></div>`;
+                htmlEscalas += cardHtml;
+                htmlAdm += `<div class="card"><button class="btn-excluir" onclick="deletar('escalas_db','${id}')">EXCLUIR</button><strong>${e.culto}</strong><small>${e.data}</small></div>`;
             }
-            for(let id in d.respostas) {
-                hMembro += `<div class="card"><strong>${d.respostas[id].nome}</strong>: ${d.respostas[id].funcoes}</div>`;
-                hAdm += `<div class="card"><button class="btn-excluir" onclick="excluir('respostas','${id}')">Limpar</button>Disp: ${d.respostas[id].nome}</div>`;
+
+            // Listar Disponibilidades
+            for(let id in data.disponibilidade) {
+                const d = data.disponibilidade[id];
+                htmlMembro += `<div class="card"><strong>${d.nome}</strong>Funções: ${d.funcoes}</div>`;
+                htmlAdm += `<div class="card"><button class="btn-excluir" onclick="deletar('disponibilidade','${id}')">LIMPAR</button><strong>PEDIDO: ${d.nome}</strong><br>${d.funcoes}</div>`;
             }
-            document.getElementById('lista-escalas').innerHTML = hEsc || "Nenhuma escala.";
-            document.getElementById('minhas-respostas').innerHTML = hMembro;
-            document.getElementById('lista-adm-total').innerHTML = hAdm;
+
+            document.getElementById('lista-escalas').innerHTML = htmlEscalas || "Nenhuma escala ativa.";
+            document.getElementById('minhas-respostas-membro').innerHTML = htmlMembro;
+            document.getElementById('lista-adm-controle').innerHTML = htmlAdm;
         });
+
     </script>
 </body>
 </html>
