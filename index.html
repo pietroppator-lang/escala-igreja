@@ -5,147 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema de Escala - Verbo da Vida</title>
     <style>
-        :root {
-            --azul: #007bff;
-            --azul-hover: #0056b3;
-            --preto: #0b0b0b;
-            --cinza-escuro: #1a1a1a;
-            --cinza-claro: #252525;
-            --branco: #ffffff;
-            --danger: #dc3545;
-        }
-
-        body {
-            background-color: var(--preto);
-            color: var(--branco);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
-
+        :root { --azul: #007bff; --preto: #0b0b0b; --cinza: #1a1a1a; --branco: #ffffff; --danger: #dc3545; }
+        body { background-color: var(--preto); color: var(--branco); font-family: 'Segoe UI', sans-serif; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; }
+        
         /* NAVEGAÇÃO */
-        .nav {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            width: 100%;
-            max-width: 500px;
-            padding: 20px 10px;
-            position: sticky;
-            top: 0;
-            background: var(--preto);
-            z-index: 1000;
-        }
-
-        .nav button {
-            flex: 1;
-            padding: 12px 5px;
-            border: none;
-            border-radius: 12px;
-            background: var(--cinza-escuro);
-            color: white;
-            font-weight: 600;
-            font-size: 11px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-        }
-
-        .nav button.active {
-            background: var(--azul);
-            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
-        }
+        .nav { display: flex; gap: 8px; width: 100%; max-width: 500px; margin-bottom: 20px; }
+        .nav button { flex: 1; padding: 12px; border-radius: 12px; border: none; background: #333; color: white; font-weight: bold; font-size: 11px; cursor: pointer; transition: 0.3s; }
+        .nav button.active { background: var(--azul); box-shadow: 0 4px 12px rgba(0,123,255,0.3); }
 
         /* CONTAINERS */
-        .container {
-            width: 95%;
-            max-width: 500px;
-            background-color: var(--cinza-escuro);
-            padding: 25px;
-            border-radius: 25px;
-            border-left: 6px solid var(--azul);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.7);
-            margin-bottom: 30px;
-            box-sizing: border-box;
-            animation: slideUp 0.5s ease-out;
-        }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        h2 { text-align: center; color: var(--azul); margin-bottom: 25px; font-size: 24px; }
-
-        input, textarea {
-            width: 100%;
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 12px;
-            border: 1px solid #333;
-            background-color: var(--cinza-claro);
-            color: white;
-            font-size: 16px;
-            box-sizing: border-box;
-        }
-
-        .btn-principal {
-            width: 100%;
-            padding: 15px;
-            border-radius: 12px;
-            border: none;
-            background-color: var(--azul);
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .btn-perigo {
-            background-color: var(--danger);
-            margin-top: 10px;
-        }
-
+        .container { width: 100%; max-width: 500px; background-color: var(--cinza); padding: 25px; border-radius: 20px; border-left: 5px solid var(--azul); margin-bottom: 20px; box-sizing: border-box; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        h2 { text-align: center; color: var(--azul); margin-bottom: 20px; }
+        
+        input, textarea, button { width: 100%; padding: 14px; margin: 10px 0; border-radius: 10px; border: none; box-sizing: border-box; font-size: 16px; }
+        input, textarea { background-color: #252525; color: white; border: 1px solid #333; }
+        
+        .btn-principal { background-color: var(--azul); color: white; font-weight: bold; cursor: pointer; }
+        .btn-danger { background-color: var(--danger); margin-top: 15px; color: white; font-weight: bold; cursor: pointer; }
+        
         /* CARDS */
-        .card {
-            background: #222;
-            padding: 15px;
-            border-radius: 15px;
-            margin-bottom: 15px;
-            border-left: 4px solid var(--azul);
-            position: relative;
-        }
-
-        .btn-mini-excluir {
-            background: var(--danger);
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 10px;
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            cursor: pointer;
-        }
-
+        .card { background: #222; padding: 15px; border-radius: 15px; margin-bottom: 15px; border-left: 4px solid var(--azul); position: relative; }
+        .btn-excluir-item { background: var(--danger); width: auto; padding: 6px 12px; font-size: 10px; position: absolute; top: 12px; right: 12px; margin: 0; border-radius: 6px; color: white; cursor: pointer; font-weight: bold; }
+        
         /* GRID CHECKBOX */
-        .grid-check {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            background: #111;
-            padding: 15px;
-            border-radius: 15px;
-        }
-
+        .grid-check { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; background: #111; padding: 15px; border-radius: 15px; }
         .check-item { display: flex; align-items: center; gap: 8px; font-size: 14px; }
-        .check-item input { width: 18px; height: 18px; accent-color: var(--azul); }
-
+        .check-item input { width: 20px; height: 20px; accent-color: var(--azul); }
+        
         .hidden { display: none; }
     </style>
 </head>
@@ -159,15 +45,15 @@
     </div>
 
     <div id="pag-home" class="container">
-        <h2>Escalas Atuais</h2>
-        <div id="lista-escalas">Carregando...</div>
+        <h2>Escalas Publicadas</h2>
+        <div id="lista-escalas">Carregando escalas...</div>
     </div>
 
     <div id="pag-login" class="container hidden">
-        <h2 id="tit-login">Acesso</h2>
+        <h2 id="login-label">Acesso</h2>
         <input type="text" id="user" placeholder="Usuário" autocomplete="off">
         <input type="password" id="pass" placeholder="Senha" autocomplete="off">
-        <button class="btn-principal" onclick="fazerLogin()">ENTRAR</button>
+        <button class="btn-principal" onclick="fazerLogin()">ACESSAR</button>
     </div>
 
     <div id="pag-membro" class="container hidden">
@@ -183,21 +69,21 @@
             <label class="check-item"><input type="checkbox" value="Bateria"> Bateria</label>
             <label class="check-item"><input type="checkbox" value="Guitarra"> Guitarra</label>
         </div>
-        <button class="btn-principal" style="margin-top:15px" onclick="enviarDisp()">ENVIAR DISPONIBILIDADE</button>
+        <button class="btn-principal" onclick="enviarDisp()">ENVIAR DISPONIBILIDADE</button>
     </div>
 
     <div id="pag-adm" class="container hidden">
         <h2>Painel do Líder</h2>
-        <input type="text" id="c-culto" placeholder="Culto">
+        <input type="text" id="c-culto" placeholder="Nome do Culto">
         <input type="text" id="c-data" placeholder="Data">
-        <textarea id="c-equipe" rows="4" placeholder="Equipe: Nome (Função)"></textarea>
-        <button class="btn-principal" onclick="postar()">PUBLICAR ESCALA</button>
+        <textarea id="c-equipe" rows="4" placeholder="Equipe (Ex: Pedro - Voz)"></textarea>
+        <button class="btn-principal" onclick="postarEscala()">PUBLICAR ESCALA</button>
         
         <hr style="border:0; border-top:1px solid #333; margin:25px 0;">
         
-        <h3>Disponibilidades Recebidas</h3>
-        <button class="btn-principal btn-perigo" id="btn-limpar-tudo" onclick="limparTudoDisp()">LIMPAR TODAS AS RESPOSTAS</button>
-        <div id="lista-adm-total" style="margin-top:20px"></div>
+        <h3>Controle de Respostas</h3>
+        <button class="btn-danger" id="limpar-tudo" style="display:none;" onclick="apagarTudoRespostas()">LIMPAR TODA A LISTA DE DISPONIBILIDADE</button>
+        <div id="lista-adm-controle" style="margin-top:15px"></div>
     </div>
 
     <script type="module">
@@ -216,7 +102,7 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
-        let destino = '';
+        let areaPretendida = '';
 
         window.irPara = (id) => {
             document.querySelectorAll('.container').forEach(c => c.classList.add('hidden'));
@@ -226,10 +112,11 @@
         };
 
         window.acessarArea = (area) => {
-            destino = area;
-            if(sessionStorage.getItem('acesso') === 'adm' || (sessionStorage.getItem('acesso') === 'membro' && area === 'membro')) irPara(area);
+            areaPretendida = area;
+            const logado = sessionStorage.getItem('loginAtivo');
+            if(logado === area || logado === 'adm') irPara(area);
             else { 
-                document.getElementById('tit-login').innerText = "Acesso " + (area === 'adm' ? "Líder" : "Músicos");
+                document.getElementById('login-label').innerText = "Login " + (area === 'adm' ? "Líder" : "Músicos");
                 irPara('login'); 
             }
         };
@@ -237,9 +124,9 @@
         window.fazerLogin = () => {
             const u = document.getElementById('user').value.toLowerCase().trim();
             const p = document.getElementById('pass').value;
-            if(u === 'pedroliveira' && p === 'admin123') { sessionStorage.setItem('acesso', 'adm'); irPara(destino || 'adm'); }
-            else if(u === 'membro' && p === 'verbo') { sessionStorage.setItem('acesso', 'membro'); irPara('membro'); }
-            else alert('Dados incorretos!');
+            if(u === 'pedroliveira' && p === 'admin123') { sessionStorage.setItem('loginAtivo', 'adm'); irPara(areaPretendida || 'adm'); }
+            else if(u === 'membro' && p === 'verbo') { sessionStorage.setItem('loginAtivo', 'membro'); irPara('membro'); }
+            else alert('Acesso Negado!');
         };
 
         window.sair = () => { sessionStorage.clear(); location.reload(); };
@@ -247,28 +134,34 @@
         window.enviarDisp = () => {
             const nome = document.getElementById('nome-membro').value;
             const funcs = Array.from(document.querySelectorAll('.grid-check input:checked')).map(i => i.value);
-            if(!nome || funcs.length === 0) return alert('Preencha nome e funções!');
+            if(!nome || funcs.length === 0) return alert('Informe nome e funções!');
             push(ref(db, 'respostas'), { nome, funcoes: funcs.join(' + ') }).then(() => {
                 alert('Enviado!'); document.getElementById('saudacao').innerText = "Olá, " + nome + "!";
+                document.getElementById('nome-membro').value = '';
+                document.querySelectorAll('.grid-check input').forEach(c => c.checked = false);
             });
         };
 
-        window.postar = () => {
+        window.postarEscala = () => {
             push(ref(db, 'escalas_db'), {
                 culto: document.getElementById('c-culto').value,
                 data: document.getElementById('c-data').value,
                 equipe: document.getElementById('c-equipe').value
-            }).then(() => alert('Escala no ar!'));
+            }).then(() => {
+                alert('Escala Publicada!');
+                document.getElementById('c-culto').value = '';
+                document.getElementById('c-data').value = '';
+                document.getElementById('c-equipe').value = '';
+            });
         };
 
-        // --- NOVAS FUNÇÕES DE EXCLUIR ---
-        window.deletarItem = (pasta, id) => {
-            if(confirm('Apagar este item?')) remove(ref(db, `${pasta}/${id}`));
+        window.excluirIndividual = (pasta, id) => {
+            if(confirm('Apagar este item permanentemente?')) remove(ref(db, `${pasta}/${id}`));
         };
 
-        window.limparTudoDisp = () => {
-            if(confirm('Deseja apagar TODAS as disponibilidades recebidas? Esta ação não pode ser desfeita.')) {
-                set(ref(db, 'respostas'), null).then(() => alert('Lista de disponibilidades limpa!'));
+        window.apagarTudoRespostas = () => {
+            if(confirm('AVISO: Isso vai limpar TODAS as respostas dos músicos. Confirmar?')) {
+                set(ref(db, 'respostas'), null).then(() => alert('Lista de disponibilidades zerada!'));
             }
         };
 
@@ -276,22 +169,25 @@
             const d = snap.val() || {};
             let hEsc = '', hAdm = '';
             
+            // Renderiza Escalas na Home e no ADM
             for(let id in d.escalas_db) {
                 const e = d.escalas_db[id];
-                hEsc += `<div class="card"><strong>${e.culto}</strong><small>${e.data}</small><p>${e.equipe.replace(/\n/g, '<br>')}</p></div>`;
-                hAdm += `<div class="card"><button class="btn-mini-excluir" onclick="deletarItem('escalas_db','${id}')">APAGAR</button><strong>Escala: ${e.culto}</strong></div>`;
+                hEsc += `<div class="card"><strong>${e.culto}</strong><br><small>${e.data}</small><p>${e.equipe.replace(/\n/g, '<br>')}</p></div>`;
+                hAdm += `<div class="card"><button class="btn-excluir-item" onclick="excluirIndividual('escalas_db','${id}')">APAGAR</button><strong>Escala: ${e.culto}</strong></div>`;
             }
 
-            const temRespostas = d.respostas && Object.keys(d.respostas).length > 0;
-            document.getElementById('btn-limpar-tudo').style.display = temRespostas ? 'block' : 'none';
+            // Controle de Exibição do Botão "Limpar Tudo"
+            const respostas = d.respostas || {};
+            document.getElementById('limpar-tudo').style.display = Object.keys(respostas).length > 0 ? 'block' : 'none';
 
-            for(let id in d.respostas) {
-                const r = d.respostas[id];
-                hAdm += `<div class="card"><button class="btn-mini-excluir" onclick="deletarItem('respostas','${id}')">APAGAR</button><strong>DISP: ${r.nome}</strong><br>${r.funcoes}</div>`;
+            // Renderiza Respostas de Disponibilidade no ADM
+            for(let id in respostas) {
+                const r = respostas[id];
+                hAdm += `<div class="card"><button class="btn-excluir-item" onclick="excluirIndividual('respostas','${id}')">APAGAR</button><strong>Membro: ${r.nome}</strong><br>Funções: ${r.funcoes}</div>`;
             }
 
             document.getElementById('lista-escalas').innerHTML = hEsc || "Nenhuma escala publicada.";
-            document.getElementById('lista-adm-total').innerHTML = hAdm || "Nenhuma resposta recebida.";
+            document.getElementById('lista-adm-controle').innerHTML = hAdm || "Nenhuma resposta de disponibilidade no momento.";
         });
     </script>
 </body>
